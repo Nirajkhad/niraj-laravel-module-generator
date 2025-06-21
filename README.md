@@ -1,9 +1,6 @@
 
 # Laravel Module Generator
 
-[![Latest Version](https://img.shields.io/packagist/v/niraj/laravel-module-generator.svg?style=flat-square)](https://packagist.org/packages/niraj/laravel-module-generator)  
-[![License](https://img.shields.io/packagist/l/niraj/laravel-module-generator.svg?style=flat-square)](LICENSE)  
-
 A Laravel package that quickly generates complete CRUD modules including Controllers, Services, Actions, DTOs, Form Requests, Models, Migrations, and Resources via a single Artisan command.
 
 ---
@@ -33,7 +30,7 @@ Creating CRUD modules repeatedly can be tedious. This package scaffolds all the 
 Require the package via Composer:
 
 ```bash
-composer require niraj/laravel-module-generator --dev
+composer require nirajkhadka/laravel-module-generator --dev
 ```
 
 Publish configuration and stubs:
@@ -105,7 +102,7 @@ Publish stubs to your project by running the vendor publish command (shown above
 
 ## Contributing
 
-Feel free to open issues or submit pull requests on the [GitHub repo](https://github.com/nirajkhadka/laravel-module-generator).
+Feel free to open issues or submit pull requests on the [GitHub repo](https://github.com/Nirajkhad/niraj-laravel-module-generator).
 
 ---
 
