@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Actions{{ moduleNamespaceSegment }}\{{ moduleName }};
+
+use App\Dtos{{ moduleNamespaceSegment }}\{{ moduleName }}Dto;
+use App\Exceptions\BadRequestException;
+use App\Http\Requests{{ moduleNamespaceSegment }}\{{ moduleName }}\StoreRequest;
+use App\Models\{{ moduleName }};
+use Exception;
+use Illuminate\Support\Facades\Log;
+
+final class StoreAction
+{
+    /**
+     * Handle the store action.
+     *
+     */
+    public function execute(StoreRequest $request): {{ moduleName }}
+    {
+        try {
+            $payload = new {{ moduleName }}Dto(
+                name: $request->name,
+            );
+
+            return {{ moduleName }}::create($payload->create());
+
+        } catch (Exception $e) {
+            Log::error('Error storing {{ moduleNameLower }}', [
+                'message' => $e->getMessage(),
+                'request' => $request->validated()
+            ]);
+
+            throw new BadRequestException(('Error on creating {{ moduleName }}'));
+        }
+    }
+}

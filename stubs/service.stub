@@ -1,0 +1,73 @@
+<?php
+
+namespace App\Services{{ moduleNamespaceSegment }};
+
+use App\Actions{{ moduleNamespaceSegment }}\{{ moduleName }}\DeleteAction;
+use App\Actions{{ moduleNamespaceSegment }}\{{ moduleName }}\StoreAction;
+use App\Actions{{ moduleNamespaceSegment }}\{{ moduleName }}\UpdateAction;
+use App\Actions{{ moduleNamespaceSegment }}\{{ moduleName }}\IndexAction;
+use App\Http\Requests{{ moduleNamespaceSegment }}\{{ moduleName }}\IndexRequest;
+use App\Http\Requests{{ moduleNamespaceSegment }}\{{ moduleName }}\StoreRequest;
+use App\Http\Requests{{ moduleNamespaceSegment }}\{{ moduleName }}\UpdateRequest;
+use App\Models\{{ moduleName }};
+use App\Http\Resources\{{ moduleName }}Resource;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+
+final class {{ moduleName }}Service
+{
+    /**
+     * Constructor with dependency injection.
+     *
+     */
+    public function __construct(
+        protected readonly IndexAction $indexAction,
+        protected readonly StoreAction $storeAction,
+        protected readonly UpdateAction $updateAction,
+        protected readonly DeleteAction $deleteAction,
+    ) {}
+
+    /**
+     * Get a list of {{ moduleNameLower }}.
+     *
+     */
+    public function index(IndexRequest $request): AnonymousResourceCollection
+    {
+        $customer = $this->indexAction->execute($request);
+
+        return CustomerResource::collection($customer);
+    }
+
+    /**
+     * Create a new {{ moduleNameLower }}.
+     *
+     */
+    public function create(StoreRequest $request): JsonResponse
+    {
+        $customer = $this->storeAction->execute($request);
+
+        return response()->json(['message' => '{{ moduleName }} created successfully', 'data' => CustomerResource::make($customer)]);
+    }
+
+    /**
+     * Update a {{ moduleNameLower }}.
+     *
+     */
+    public function update(UpdateRequest $request, {{ moduleName }} ${{ moduleNameLower }}): JsonResponse
+    {
+        $customer = $this->updateAction->execute($request, $customer);
+
+        return response()->json(['message' => '{{ moduleName }} updated successfully', 'customer' => CustomerResource::make($customer)]);
+    }
+
+    /**
+     * Delete a {{ moduleNameLower }}.
+     *
+     */
+    public function delete({{ moduleName }} ${{ moduleNameLower }}): JsonResponse
+    {
+        $this->deleteAction->execute($customer);
+
+        return response()->json(['message' => '{{ moduleName }} deleted successfully', 'data' => CustomerResource::make($customer)]);
+    }
+}

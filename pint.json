@@ -1,0 +1,15 @@
+{
+  "preset": "per",
+  "rules": {
+    "declare_strict_types": true,
+    "function_declaration": {
+      "closure_fn_spacing": "one"
+    },
+    "not_operator_with_successor_space": false,
+    "concat_space": {
+      "spacing": "one"
+    },
+    "new_with_parentheses": false,
+    "single_quote": true
+  }
+}

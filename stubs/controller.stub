@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Http\Controllers{{ moduleNamespaceSegment }};
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests{{ moduleNamespaceSegment }}\{{ moduleName }}\IndexRequest;
+use App\Http\Requests{{ moduleNamespaceSegment }}\{{ moduleName }}\StoreRequest;
+use App\Http\Requests{{ moduleNamespaceSegment }}\{{ moduleName }}\UpdateRequest;
+use App\Models\{{ moduleName }};
+use App\Services{{ moduleNamespaceSegment }}\{{ moduleName }}Service;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+
+
+
+class {{ moduleName }}Controller extends Controller
+{
+    /**
+     * Constructor with dependency injection.
+     *
+     */
+    public function __construct(private readonly {{ moduleName }}Service ${{ moduleNameLower }}Service) {}
+
+    /**
+     * Return a list of customers.
+     *
+     */
+    public function index(IndexRequest $indexRequest): AnonymousResourceCollection
+    {
+        return $this->customerService->index($indexRequest);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     */
+    public function store(StoreRequest $request): JsonResponse
+    {
+        return $this->{{ moduleNameLower }}Service->create($request);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     */
+    public function update(UpdateRequest $request, {{ moduleName }} ${{ moduleNameLower }}): JsonResponse
+    {
+        return $this->{{ moduleNameLower }}Service->update($request, ${{ moduleNameLower }});
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     */
+    public function destroy({{ moduleName }} ${{ moduleNameLower }}): JsonResponse
+    {
+        return $this->{{ moduleNameLower }}Service->delete(${{ moduleNameLower }});
+    }
+}

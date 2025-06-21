@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Actions{{ moduleNamespaceSegment }}\{{ moduleName }};
+
+use App\Dtos{{ moduleNamespaceSegment }}\{{ moduleName }}Dto;
+use App\Exceptions\BadRequestException;
+use App\Http\Requests{{ moduleNamespaceSegment }}\{{ moduleName }}\UpdateRequest;
+use App\Models\{{ moduleName }};
+use Exception;
+use Illuminate\Support\Facades\Log;
+
+final class UpdateAction
+{
+    /**
+     * Handle the update action.
+     *
+     * @throws BadRequestException
+     */
+    public function execute(UpdateRequest $request, {{ moduleName }} $model): {{ moduleName }}
+    {
+        try {
+            $payload = new {{ moduleName }}Dto(
+                name: $request->input('name'),
+            );
+
+            $model->fill($payload->update());
+            if($model->isDirty()){
+                $model->save();
+            }
+
+            return $model->refresh();
+        } catch (Exception $e) {
+            Log::error('Error updating {{ moduleNameLower }}', [
+                'message' => $e->getMessage(),
+                'request' => $request->validated(),
+                'model_id' => $model->id
+            ]);
+
+            throw new BadRequestException('Error updating {{ moduleName }}');
+        }
+    }
+}

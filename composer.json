@@ -1,0 +1,69 @@
+{
+  "name": "niraj/laravel-module-generator",
+  "description": "A Laravel package that generates complete CRUD modules with controllers, services, actions, DTOs, form requests, models, and migrations using artisan commands.",
+  "keywords": [
+    "laravel",
+    "php",
+    "generator",
+    "crud",
+    "module",
+    "scaffold",
+    "artisan",
+    "boilerplate",
+    "code-generator"
+  ],
+  "license": "MIT",
+  "type": "library",
+  "homepage": "https://github.com/nirajkhadka/laravel-module-generator",
+  "support": {
+    "issues": "https://github.com/nirajkhadka/laravel-module-generator/issues",
+    "source": "https://github.com/nirajkhadka/laravel-module-generator"
+  },
+  "authors": [
+    {
+      "name": "Niraj Khadka",
+      "email": "khadka.niraj11111@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^8.1|^8.2|^8.3|^8.4",
+    "illuminate/console": "^9.0|^10.0|^11.0|^12.0",
+    "illuminate/filesystem": "^9.0|^10.0|^11.0|^12.0",
+    "illuminate/support": "^9.0|^10.0|^11.0|^12.0"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.22",
+    "orchestra/testbench": "^7.0|^8.0|^9.0",
+    "phpunit/phpunit": "^9.5|^10.0|^11.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Niraj\\LaravelModuleGenerator\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Niraj\\LaravelModuleGenerator\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit",
+    "test-coverage": "vendor/bin/phpunit --coverage-html coverage",
+    "format": "vendor/bin/pint"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Niraj\\LaravelModuleGenerator\\ModuleServiceProvider"
+      ]
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "sort-packages": true,
+    "preferred-install": "dist",
+    "optimize-autoloader": true
+  }
+}

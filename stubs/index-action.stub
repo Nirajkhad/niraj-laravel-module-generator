@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Actions{{ moduleNamespaceSegment }}\{{ moduleName }};
+
+use App\Exceptions\BadRequestException;
+use App\Http\Requests{{ moduleNamespaceSegment }}\{{ moduleName }}\IndexRequest;
+use App\Models\{{ moduleName }};
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
+use Throwable;
+
+final class IndexAction
+{
+
+    private const DEFAULT_PER_PAGE = 10;
+    private const MAX_PER_PAGE = 100;
+
+    /**
+     * Fetch a list of customers.
+     *
+     */
+    public function execute(IndexRequest $request): LengthAwarePaginator
+    {
+        try {
+            $searchKey = $request->input('key');
+            $perPage = $this->getPerPageValue($request);
+
+            $query = Customer::query()
+                ->when($searchKey, fn(Builder $query, string $key): Builder => 
+                    $query->where('name', 'like', "%{$key}%")
+                        // ->orWhere('email', 'like', "%{$key}%")
+                        // ->orWhere('phone', 'like', "%{$key}%")
+                )
+                ->orderBy('created_at', 'desc');
+
+            return $query->paginate($perPage);
+        } catch (Throwable $e) {
+            Log::error('Error fetching customers', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'request_data' => $request->validated()
+            ]);
+
+            throw new BadRequestException('Failed to fetch customers');
+        }
+    }
+
+    /**
+     * Returns the number of items to show per page.
+     *
+     */
+    private function getPerPageValue(IndexRequest $request): int
+    {
+        $perPage = (int) $request->input('per_page', self::DEFAULT_PER_PAGE);
+        
+        return min($perPage, self::MAX_PER_PAGE);
+    }
+}

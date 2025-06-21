@@ -1,0 +1,125 @@
+<?php
+
+namespace App\Actions\Netsuite\{{ moduleName }};
+
+use App\Dtos\Netsuite\{{ moduleName }}Dto;
+use App\ExternalServices\ExternalApiService;
+use App\Traits\Loggable;
+use App\Models\{{ moduleName }};
+use App\Exceptions\BadRequestException;
+use Exception;
+use Spatie\FlareClient\Flare;
+
+final class SyncAction
+{
+    use Loggable;
+
+    /**
+     * The log process name.
+     */
+    private const string LOG_PROCESS = 'netsuite_{{ moduleLower }}_sync';
+
+    /**
+     * Handle the sync action.
+     *
+     * @throws BadRequestException
+     */
+    public static function handle({{ moduleName }} ${{ moduleCamel }}): void
+    {
+        try {
+            // Create and update DTO
+            $dto = self::createDtoObject(${{ moduleCamel }});
+            $payload = $dto->update();
+            $payloadArray = (array) $payload;
+
+            // Send to external service
+            $externalService = new ExternalApiService();
+            $response = $externalService->postResource('', [
+                'action' => config('netsuite.post.sync.{{ moduleLower }}.sync'),
+                'data' => $payload
+            ]);
+
+            // Handle response
+            if ($response->success) {
+                self::logJobSuccess($payloadArray, $response);
+            } else {
+                self::logJobFail($response->message);
+            }
+        } catch (Exception $e) {
+            self::flareException($e);
+            self::logJobError($e);
+            throw new BadRequestException(
+                message: __('message.{{ moduleLower }}.sync_failed'),
+                previous: $e
+            );
+        }
+    }
+
+    /**
+     * Create a DTO object from the model.
+     *
+     */
+    private static function createDtoObject({{ moduleName }} ${{ moduleCamel }}): {{ moduleName }}Dto
+    {
+        return new {{ moduleName }}Dto(
+            nsId: ${{ moduleCamel }}->ns_id,
+            status: ${{ moduleCamel }}->status
+        );
+    }
+
+    /**
+     * Log successful job.
+     *
+     */
+    private static function logJobSuccess(array $payload, ?object $response): void
+    {
+        self::logInfo(
+            event: 'sync.{{ moduleLower }}_create.success',
+            data: [
+                'payload' => $payload,
+                'response' => $response,
+            ],
+            process: self::LOG_PROCESS
+        );
+    }
+
+    /**
+     * Log failed job.
+     *
+     */
+    private static function logJobFail(string $message): void
+    {
+        self::logError(
+            event: 'sync.{{ moduleLower }}_create.fail',
+            data: [
+                'message' => $message,
+            ],
+            process: self::LOG_PROCESS
+        );
+    }
+
+    /**
+     * Report exception to Flare.
+     *
+     */
+    private static function flareException(Exception $exception): void
+    {
+        app(Flare::class)->report($exception);
+    }
+
+    /**
+     * Log job error event.
+     *
+     */
+    private static function logJobError(Exception $exception): void
+    {
+        self::logError(
+            event: 'sync.{{ moduleLower }}-create.error',
+            data: [
+                'message' => $exception->getMessage(),
+            ],
+            exception: $exception,
+            process: self::LOG_PROCESS
+        );
+    }
+}

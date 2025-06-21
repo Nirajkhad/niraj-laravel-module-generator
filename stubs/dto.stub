@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Dtos{{ moduleNamespaceSegment }};
+
+/**
+ * Data Transfer Object for {{ moduleName }}.
+ */
+final class {{ moduleName }}Dto
+{
+    /**
+     * Constructor.
+     *
+     */
+    public function __construct(
+        public readonly string $name,
+    ) {}
+
+    /**
+     * Get data for create operation.
+     *
+     * @return array<string, mixed>
+     */
+    public function create(): array
+    {
+        return [
+            'name' => $this->name,
+        ];
+    }
+
+    /**
+     * Get data for update operation.
+     *
+     * @return array<string, mixed>
+     */
+    public function update(): array
+    {
+        return [
+            'name' => $this->name,
+        ];
+    }
+}

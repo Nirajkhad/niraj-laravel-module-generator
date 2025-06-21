@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Actions{{ moduleNamespaceSegment }}\{{ moduleName }};
+
+use App\Exceptions\BadRequestException;
+use App\Models\{{ moduleName }};
+use Exception;
+use Illuminate\Support\Facades\Log;
+
+final class DeleteAction
+{
+    /**
+     * Handle the delete action.
+     *
+     * @throws BadRequestException
+     */
+    public function execute({{ moduleName }} $model): void
+    {
+        try {
+            $model->delete();
+
+        } catch (Exception $e) {
+            Log::error('Error deleting {{ moduleNameLower }}', [
+                'message' => $e->getMessage(),
+                'model_id' => $model->id
+            ]);
+
+            throw new BadRequestException('Error deleting {{ moduleName }}');
+        }
+    }
+}
