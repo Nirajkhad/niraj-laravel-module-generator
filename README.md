@@ -1,293 +1,170 @@
 
-# Laravel Module Generator
+# Laravel NetSuite Integration
 
-[![Latest Version](https://img.shields.io/packagist/v/niraj/laravel-module-generator.svg?style=flat-square)](https://packagist.org/packages/niraj/laravel-module-generator)  
-[![License](https://img.shields.io/packagist/l/niraj/laravel-module-generator.svg?style=flat-square)](LICENSE)  
+A comprehensive package that simplifies NetSuite integration with Laravel applications by automating the creation of controllers, services, actions, DTOs, and other components needed for effective data synchronization.
 
-A Laravel package that quickly generates complete CRUD modules including Controllers, Services, Actions, DTOs, Form Requests, Models, Migrations, and Resources via a single Artisan command.
-
----
-
-## Why Use This Package?
-
-Creating CRUD modules repeatedly can be tedious. This package scaffolds all the essential files you need to get started with clean, maintainable, and consistent code architecture — so you can focus on business logic instead of boilerplate.
-
----
-
-## Features
-
-- Generate Controllers, Services, and Action classes for CRUD operations  
-- Generate Data Transfer Objects (DTOs) for data handling  
-- Generate Form Request classes with validation  
-- Generate Eloquent Models with UUID support  
-- Generate timestamped database migration files  
-- Generate API Resource classes for consistent JSON responses  
-- Support for nested modules with proper namespaces  
-- Configurable base namespace and paths  
-- Stub files can be published and customized  
-
----
+## Table of Contents
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Available Commands](#available-commands)
 
 ## Installation
 
-Require the package via Composer:
+### Add Repository
 
-```bash
-composer require niraj/laravel-module-generator --dev
+First, add the GitHub repository to your `composer.json`:
+
+```json
+"repositories": [
+  {
+    "type": "vcs",
+    "url": "https://github.com/intujicoder/niraj-laravel-netsuite"
+  }
+],
 ```
 
-Publish configuration and stubs:
+### Authenticate with GitHub
+
+Add the token to Composer globally
 
 ```bash
-php artisan vendor:publish --tag=module-generation-config
-php artisan vendor:publish --tag=module-generator-stubs
+composer config --global github-oauth.github.com your_github_token_here
+
 ```
 
----
+### Install Package
 
-## Usage
-
-Generate a new module with:
+Install the package via Composer:
 
 ```bash
-php artisan module:make {ModuleName}
+composer require intujicoder/laravel-netsuite
 ```
 
-Example:
+### Publish Configuration and Stubs
+
+After installation, publish the configuration files and stubs:
 
 ```bash
-php artisan module:make Customer
+php artisan vendor:publish --provider="Intujicoder\LaravelNetsuite\ModuleServiceProvider"
 ```
 
-This command creates:
-
-- Controller (`CustomerController.php`)  
-- Service (`CustomerService.php`)  
-- Actions: Index, Store, Update, Delete  
-- DTO (`CustomerDto.php`)  
-- Requests: Index, Store, Update  
-- Model (`Customer.php`)  
-- Migration file for the table  
-- API Resource (`CustomerResource.php`)  
-
-### Nested Modules
-
-You can specify nested namespaces by using slashes:
-
-```bash
-php artisan module:make Admin/Customer
-```
-
-This generates the module under `App\Http\Controllers\Admin`, `App\Services\Admin`, etc.
-
----
+This will create:
+- Configuration files: `config/syncing-module.php` and `config/netsuite.php`
+- Stub templates: `stubs/vendor/syncing-module`
 
 ## Configuration
 
-Modify the published config file `config/module-generation-module.php` to customize:
+### Syncing Module Configuration
 
-- Base namespace  
-- Paths for controllers, services, actions, DTOs, and requests  
-
----
-
-## Customizing Stubs
-
-Customize generated files by modifying the stub files located at:
-
-```
-stubs/vendor/module-generator-stubs
-```
-
-Publish stubs to your project by running the vendor publish command (shown above).
-
----
-
-## Contributing
-
-Feel free to open issues or submit pull requests on the [GitHub repo](https://github.com/nirajkhadka/laravel-module-generator).
-
----
-
-## License
-
-MIT License © Niraj Khadka
-
----
-
-## Author
-
-Niraj Khadka  
-Email: khadka.niraj11111@gmail.com  
-GitHub: [nirajkhadka](https://github.com/nirajkhadka)
-
----
-
-
-### Usage Examples
-
-#### Basic Module Generation
-
-Generate a simple module named Product:
-
-```bash
-php artisan module:make Product
-```
-
-This creates:
-
-- `app/Http/Controllers/ProductController.php`
-- `app/Services/ProductService.php`
-- Actions: `IndexAction.php`, `StoreAction.php`, `UpdateAction.php`, `DeleteAction.php`
-- DTO: `ProductDto.php`
-- Requests: `IndexRequest.php`, `StoreRequest.php`, `UpdateRequest.php`
-- Model: `Product.php`
-- Migration: timestamped `create_products_table.php`
-- API Resource: `ProductResource.php`
-
-#### Nested Module with Namespace
-
-Generate a nested module `Admin/User` with namespacing:
-
-```bash
-php artisan module:make Admin/User
-```
-
-Creates:
-
-- `app/Http/Controllers/Admin/UserController.php`
-- `app/Services/Admin/UserService.php`
-- Actions inside `app/Actions/Admin/User/`
-- Requests inside `app/Http/Requests/Admin/User/`
-- Model: `app/Models/Admin/User.php` (if your config supports nested models)
-- Migration and resources properly namespaced
-
-This keeps code organized in subfolders and namespaces.
-
-#### Customizing Namespace and Paths
-
-Publish the config file:
-
-```bash
-php artisan vendor:publish --tag=module-generation-config
-```
-
-Then edit `config/module-generation-module.php`:
+The `config/syncing-module.php` file defines namespaces and paths for generated components:
 
 ```php
 return [
     'base_namespace' => 'App',
+    'netsuite' => [
+        'namespace' => 'Netsuite',
+    ],
     'paths' => [
-        'controllers' => 'Http/Controllers/Custom',
-        'services' => 'Domain/Services',
-        'actions' => 'Domain/Actions',
-        'dtos' => 'Domain/Dtos',
-        'requests' => 'Http/Requests/Custom',
+        'controllers' => 'Http/Controllers',
+        'services' => 'Services/Netsuite',
+        'actions' => 'Actions/Netsuite',
+        'dtos' => 'Dtos/Netsuite',
+        'requests' => 'Http/Requests/Netsuite',
     ],
 ];
 ```
 
-Now when you run `module:make Product`, files will generate inside your custom directories.
+### NetSuite API Configuration
 
----
+Configure your NetSuite API credentials in `config/netsuite.php`:
 
-### FAQ
+```php
+return [
+    'consumer_key' => env('NS_CONSUMER_KEY', ''),
+    'consumer_secret' => env('NS_CONSUMER_SECRET', ''),
+    'token_id' => env('NS_TOKEN_ID', ''),
+    'token_secret' => env('NS_TOKEN_SECRET', ''),
+    'script_id' => env('NS_SCRIPT_ID', ''),
+    'deploy_id' => env('NS_DEPLOY_ID', ''),
+    'account' => env('NS_ACCOUNT', ''),
+    'oauth_sig_method' => env('NS_OAUTH_SIGN_METHOD', ''),
+    'oauth_version' => env('NS_OAUTH_VERSION', ''),
+    'url' => env('NS_URL', ''),
+    'netsuite-token' => env('NS_WEB_TOKEN', ''),
+    'endpoints' => [
+        'post' => [
+            'sync' => [
+                'test' => 'createTest',
+                // Add additional endpoints here
+            ],
+        ],
+    ],
+];
+```
 
-**Q: Can I generate only specific parts of the module?**  
-A: Currently, the package generates the full CRUD module at once. Selective generation may be planned for future versions.
+Be sure to add the corresponding environment variables to your `.env` file.
 
-**Q: How do I override stub templates?**  
-A: Run:
+## Usage
+
+### Generate a Module
+
+Create a complete NetSuite integration module for any entity:
 
 ```bash
-php artisan vendor:publish --tag=module-generator-stubs
+php artisan nestuite:make-module Customer
 ```
 
-This publishes stub files to `stubs/vendor/module-generator-stubs/`. Modify these `.stub` files to customize generated code templates.
-
-**Q: Will this work with Laravel versions below 9?**  
-A: No, it requires Laravel 9 or higher due to dependencies and PHP 8.1+ features.
-
-**Q: How do I change UUID generation or disable it?**  
-A: Modify the model stub in your published stubs directory. You can change or remove the `HasUuids` trait and UUID logic as needed.
-
-**Q: How to add additional fields to the migration?**  
-A: Edit the migration stub after publishing, or manually add columns after generation.
-
----
-
-### Troubleshooting Tips
-
-- **Command Not Found:** Ensure package is installed via Composer and `ModuleServiceProvider` is registered (auto-discovered by default).
-
-- **Stubs Not Publishing:** Check write permissions on your `stubs/` directory and run the publish command again.
-
-- **Namespace Issues:** Verify the `base_namespace` and paths in the config file match your Laravel app structure.
-
-- **Migration Timestamp Conflicts:** If migration with the same name exists, you will be prompted to overwrite or skip.
-
-- **Model Not Found in Controller:** Check your namespace configurations, especially if you use nested modules.
-
----
-
-### Code Snippets for Extending or Modifying Generated Modules
-
-#### Adding a New Method to the Service
-
-Open the generated service, e.g., `app/Services/ProductService.php` and add:
-
-```php
-public function getByName(string $name): ?Product
-{
-    return Product::where('name', $name)->first();
-}
+This command generates:
+```
+├── Http/Controllers/Netsuite/CustomerController.php
+├── Services/Netsuite/CustomerService.php
+├── Actions/Netsuite/Customer/StoreAction.php
+├── Dtos/Netsuite/CustomerDto.php
+├── Http/Requests/Netsuite/Customer/StoreRequest.php
+└── ... additional files
 ```
 
-#### Adding Custom Validation to Requests
+### Generate a NetSuite Sync Job
 
-Modify `StoreRequest.php`:
+Create a dedicated background job for NetSuite synchronization:
 
-```php
-public function rules(): array
-{
-    return [
-        'name' => ['required', 'string', 'min:3', 'unique:products,name'],
-        'price' => ['required', 'numeric', 'min:0'],
-    ];
-}
+```bash
+php artisan netsuite:make-job Customer
 ```
 
-Add new fields accordingly in DTO and migration stubs as well.
-
-#### Extending Controller with a Custom Endpoint
-
-In `ProductController.php`, add:
-
-```php
-public function search(Request $request)
-{
-    $name = $request->input('name');
-
-    $product = $this->productService->getByName($name);
-
-    if (!$product) {
-        return response()->json(['message' => 'Product not found'], 404);
-    }
-
-    return response()->json(['data' => ProductResource::make($product)]);
-}
+This creates:
+```
+└── Jobs/Netsuite/CustomerSyncJob.php
 ```
 
-Add a route to `routes/api.php`:
+## Available Commands
 
-```php
-Route::get('products/search', [ProductController::class, 'search']);
+| Command | Description | Parameters |
+|---------|-------------|------------|
+| `nestuite:make-module` | Creates a complete module with all components | `{moduleName}` - Name of entity (e.g., Customer) |
+| `netsuite:make-job` | Generates a queue-ready sync job | `{module}` - Module to create job for |
+
+Usage examples:
+```bash
+php artisan nestuite:make-module {moduleName}
+php artisan netsuite:make-job {module}
 ```
 
----
+## Architecture Overview
 
-### Customizing Stub Files
+This package implements a robust architecture:
 
-After publishing stubs, edit any `.stub` file inside `stubs/vendor/module-generator-stubs/` such as `controller.stub`:
+- **Controllers**: Handle HTTP requests/responses
+- **Services**: Coordinate business logic and NetSuite interactions
+- **Actions**: Single-responsibility classes for specific operations
+- **DTOs**: Clean data transfer objects for transformation
+- **Jobs**: Background processing for NetSuite synchronization
 
-Replace placeholders or add custom traits, imports, or methods that fit your coding style or project standards.
+## Troubleshooting
+
+Common issues:
+- **Authentication failures**: Verify credentials in your `.env` file
+- **Generation errors**: Check directory permissions and namespace configurations
+
+For major changes, please open an issue first to discuss what you would like to change.
