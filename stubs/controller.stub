@@ -20,7 +20,7 @@ class {{ moduleName }}Controller extends Controller
     public function __construct(private readonly {{ moduleName }}Service ${{ moduleNameLower }}Service) {}
 
     /**
-     * Return a list of customers.
+     * Return a list of {{ moduleNamePluralLower }}.
      *
      */
     public function index(IndexRequest $indexRequest): AnonymousResourceCollection
