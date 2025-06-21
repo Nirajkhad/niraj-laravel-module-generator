@@ -14,14 +14,14 @@
   ],
   "license": "MIT",
   "type": "library",
-  "homepage": "https://github.com/nirajkhadka/laravel-module-generator",
+  "homepage": "https://github.com/Nirajkhad/laravel-module-generator",
   "support": {
-    "issues": "https://github.com/nirajkhadka/laravel-module-generator/issues",
-    "source": "https://github.com/nirajkhadka/laravel-module-generator"
+    "issues": "https://github.com/Nirajkhad/laravel-module-generator/issues",
+    "source": "https://github.com/Nirajkhad/laravel-module-generator"
   },
   "authors": [
     {
-      "name": "NirajKhadka Khadka",
+      "name": "Niraj Khadka",
       "email": "khadka.niraj11111@gmail.com",
       "role": "Developer"
     }

@@ -116,7 +116,7 @@ MIT License © Niraj Khadka
 
 Niraj Khadka  
 Email: khadka.niraj11111@gmail.com  
-GitHub: [nirajkhadka](https://github.com/nirajkhadka)
+GitHub: [Nirajkhad](https://github.com/Nirajkhad/)
 
 ---
 
