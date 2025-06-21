@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Niraj\LaravelModuleGenerator\Console\Commands;
+namespace NirajKhadka\LaravelModuleGenerator\Console\Commands;
 
 use Exception;
 use Illuminate\Console\Command;
@@ -18,7 +18,7 @@ class MakeModuleCommand extends Command
 
     protected $description = 'Generate a complete CRUD module with controller, service, actions, DTO, requests, model, migration, and resource';
 
-    private const STUB_DIRECTORY = 'niraj/laravel-module-generator';
+    private const STUB_DIRECTORY = 'nirajkhadka/laravel-module-generator';
 
     private const ACTIONS_PATH_PATTERN = 'Actions{moduleNamespaceDir}/{moduleName}';
     private const REQUESTS_PATH_PATTERN = 'Http/Requests{moduleNamespaceDir}/{moduleName}';

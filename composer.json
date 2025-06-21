@@ -1,5 +1,5 @@
 {
-  "name": "niraj/laravel-module-generator",
+  "name": "nirajkhadka/laravel-module-generator",
   "description": "A Laravel package that generates complete CRUD modules with controllers, services, actions, DTOs, form requests, models, and migrations using artisan commands.",
   "keywords": [
     "laravel",
@@ -21,7 +21,7 @@
   },
   "authors": [
     {
-      "name": "Niraj Khadka",
+      "name": "NirajKhadka Khadka",
       "email": "khadka.niraj11111@gmail.com",
       "role": "Developer"
     }
@@ -39,12 +39,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Niraj\\LaravelModuleGenerator\\": "src/"
+      "NirajKhadka\\LaravelModuleGenerator\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Niraj\\LaravelModuleGenerator\\Tests\\": "tests/"
+      "NirajKhadka\\LaravelModuleGenerator\\Tests\\": "tests/"
     }
   },
   "scripts": {
@@ -55,7 +55,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Niraj\\LaravelModuleGenerator\\ModuleServiceProvider"
+        "NirajKhadka\\LaravelModuleGenerator\\ModuleServiceProvider"
       ]
     }
   },

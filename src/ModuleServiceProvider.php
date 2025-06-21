@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Niraj\LaravelModuleGenerator;
+namespace NirajKhadka\LaravelModuleGenerator;
 
 use Illuminate\Support\ServiceProvider;
-use Niraj\LaravelModuleGenerator\Console\Commands\MakeModuleCommand;
+use NirajKhadka\LaravelModuleGenerator\Console\Commands\MakeModuleCommand;
 
 class ModuleServiceProvider extends ServiceProvider
 {
